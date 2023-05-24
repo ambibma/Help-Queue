@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { v4 } from 'uuid'; // new code
 
 
 
@@ -17,6 +18,7 @@ function Ticket(props){
 Ticket.propTypes = {
   names: PropTypes.string.isRequired,
   location: PropTypes.string.isRequired,
-  issue: PropTypes.string.isRequired
+  issue: PropTypes.string.isRequired,
+  // id: PropTypes.v4()
 };
 export default Ticket;

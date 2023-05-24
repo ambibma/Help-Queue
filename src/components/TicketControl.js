@@ -2,7 +2,7 @@ import React from 'react';
 import NewTicketForm from './NewTicketForm';
 import TicketList from './TicketList';
 import TroubleShoot from './TroubleShoot';
-
+import { v4 } from 'uuid'
 class TicketControl extends React.Component {
 
   constructor(props){
@@ -10,8 +10,18 @@ class TicketControl extends React.Component {
     this.state = {
       listVisibleOnPage:true,
       formVisibleOnPage:false,
+      mainTicketList: [],
       troubleshootMessageVisibleOnPage: false
     };
+  }
+  handleAddingNewTicketToList = (newTicket) => {
+    const newMainTicketList = this.state.mainTicketList.concat(newTicket);
+    this.setState(prevState => ({
+      mainTicketList: newMainTicketList,
+      listVisibleOnPage: prevState.formVisibleOnPage,
+      formVisibleOnPage: prevState.troubleshootMessageVisibleOnPage,
+      troubleshootMessageVisibleOnPage: prevState.listVisibleOnPage
+    }));
   }
   // handleClick = () => {
   //   this.setState({formVisibleOnPage: true});
@@ -36,10 +46,10 @@ class TicketControl extends React.Component {
         currentlyVisibleState = <TroubleShoot />
         buttonText = "YES DUH";
     } else if (this.state.formVisibleOnPage) {
-      currentlyVisibleState = <NewTicketForm />
+      currentlyVisibleState = <NewTicketForm onNewTicketCreation={this.handleAddingNewTicketToList}/>
       buttonText = "Return to Ticket List";
     } else {
-      currentlyVisibleState = <TicketList />
+      currentlyVisibleState = <TicketList ticketList={this.state.mainTicketList} />
       buttonText = "Troubleshoot";
       // addTicketButton = <button onClick={this.handleClick}>Add Ticket</button>
     }
