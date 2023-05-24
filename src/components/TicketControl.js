@@ -23,7 +23,7 @@ class TicketControl extends React.Component {
       troubleshootMessageVisibleOnPage: prevState.listVisibleOnPage
     }));
   }
-  // handleClick = () => {
+  // handleClick = () => { 
   //   this.setState({formVisibleOnPage: true});
     
     
