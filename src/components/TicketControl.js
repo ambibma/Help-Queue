@@ -8,62 +8,67 @@ class TicketControl extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      stateName: "list", //list, troubleshoot, form, 
-      listVisibleOnPage:true,
-      formVisibleOnPage:false,
+      stateName: 'list',
       mainTicketList: [],
       selectedTicket: null,
-      troubleshootMessageVisibleOnPage: false
     };
   }
+ 
+  handleClick = () => {
+    let nextState = null;
+    
+    switch(this.state.stateName){
+      case 'troubleshoot':
+        nextState = 'form';
+        break;
+      case 'form':
+        nextState = 'list';
+        break;
+      case 'list':
+        nextState = 'troubleshoot';
+        break;
+      default:
+        nextState = 'list';
+        break;
+    }
+    this.setState(prevState => ({
+      stateName: nextState
+    }))
+  };
+
   handleAddingNewTicketToList = (newTicket) => {
     const newMainTicketList = this.state.mainTicketList.concat(newTicket);
     this.setState(prevState => ({
-      mainTicketList: newMainTicketList,
-      listVisibleOnPage: prevState.formVisibleOnPage,
-      formVisibleOnPage: prevState.troubleshootMessageVisibleOnPage,
-      troubleshootMessageVisibleOnPage: prevState.listVisibleOnPage
+      mainTicketList: newMainTicketList
     }));
-  }
-  // handleClick = () => { 
-  //   this.setState({formVisibleOnPage: true});
-    
-    
-  // }
-  handleClick = () => {
-    this.setState(prevState => ({
-      listVisibleOnPage: prevState.formVisibleOnPage,
-      formVisibleOnPage: prevState.troubleshootMessageVisibleOnPage,
-      troubleshootMessageVisibleOnPage: prevState.listVisibleOnPage
-    }));
-  }
+    this.handleClick()
+    };
+  
   
 
   render (){
     let currentlyVisibleState = null;
     let buttonText = null;
     let addTicketButton = null; //thhanks camaron
-    if(this.state.troubleshootMessageVisibleOnPage){
-        
-        currentlyVisibleState = <TroubleShoot />
-        buttonText = "YES DUH";
-    } else if (this.state.formVisibleOnPage) {
-      currentlyVisibleState = <NewTicketForm onNewTicketCreation={this.handleAddingNewTicketToList}/>
-      buttonText = "Return to Ticket List";
-    } else {
-      currentlyVisibleState = <TicketList ticketList={this.state.mainTicketList} />
-      buttonText = "Troubleshoot";
-      // addTicketButton = <button onClick={this.handleClick}>Add Ticket</button>
-    }
 
-    // switch(this.state) {
-    //   case "list":
-    //     currentlyVisibleState = <TicketList />
-    //     buttonText = "Troubleshoot";
-    //     break;
-    //   case "troubleshoot"
-    // }
-    
+    switch(this.state.stateName){
+      case 'troubleshoot':
+        currentlyVisibleState = <TroubleShoot />;
+        buttonText = "YES DUH";
+        break;
+      case 'form':
+        currentlyVisibleState = <NewTicketForm onNewTicketCreation={this.handleAddingNewTicketToList}/>;
+        buttonText = "Return to Ticket List";
+        break;
+      case 'ticketList':
+        currentlyVisibleState = <TicketList ticketList={this.state.mainTicketList} />
+        buttonText ="Troubleshoot";
+        break;
+      default: 
+        currentlyVisibleState = <TicketList ticketList={this.state.mainTicketList} />
+        buttonText ="Troubleshoot";
+        break;
+    }
  
     return(
       <>
@@ -72,6 +77,5 @@ class TicketControl extends React.Component {
       </>
     )
   }
-
 }
 export default TicketControl;
