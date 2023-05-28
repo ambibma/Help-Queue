@@ -8,9 +8,11 @@ class TicketControl extends React.Component {
   constructor(props){
     super(props);
     this.state = {
+      stateName: "list", //list, troubleshoot, form, 
       listVisibleOnPage:true,
       formVisibleOnPage:false,
       mainTicketList: [],
+      selectedTicket: null,
       troubleshootMessageVisibleOnPage: false
     };
   }
