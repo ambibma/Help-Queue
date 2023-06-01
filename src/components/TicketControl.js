@@ -58,7 +58,15 @@ class TicketControl extends React.Component {
     }));
     this.handleClick()
     };
-  
+
+  handleDeletingTicket = (id) => {
+    const newMainTicketList = this.state.mainTicketList.filter(ticket => ticket.id !== id);
+    this.setState({
+      stateName: 'list',
+      mainTicketList: newMainTicketList,
+      selectedTicket: null
+    });
+  }
   
 
   render (){
@@ -68,7 +76,7 @@ class TicketControl extends React.Component {
 
     switch(this.state.stateName){
       case 'ticketDetails':
-        currentlyVisibleState = <TicketDetail ticket={this.state.selectedTicket}/>;
+        currentlyVisibleState = <TicketDetail ticket={this.state.selectedTicket} onClickingDelete = {this.handleDeletingTicket} />
         buttonText = 'Return to Ticket List';
         break;
       case 'troubleshoot':
