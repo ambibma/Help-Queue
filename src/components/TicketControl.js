@@ -4,6 +4,7 @@ import TicketList from './TicketList';
 import TroubleShoot from './TroubleShoot';
 import { v4 } from 'uuid'
 import TicketDetail from './TicketDetail';
+import EditTicketForm from './EditTicketForm';
 class TicketControl extends React.Component {
 
   constructor(props){
@@ -12,6 +13,7 @@ class TicketControl extends React.Component {
       stateName: 'list',
       mainTicketList: [],
       selectedTicket: null,
+      // editingTicket?
     };
   }
  
@@ -67,6 +69,23 @@ class TicketControl extends React.Component {
       selectedTicket: null
     });
   }
+  handleEditClick = () => {
+    console.log("handleEditClick reached!");
+    this.setState({stateName: "editing"});
+  }
+
+  handleEditingTicketInListToBeClickedOnLaterWhenYouNeedToUpdateAFormForWhenYouUseCreateReactAppButDoNotKnowWhatYouAreDoingButHaveToDoItAnyWayAlright = (ticketToEdit) => {
+    const editedMainTicketList = this.state.mainTicketList
+      .filter(ticket => ticket.id !== this.state.selectedTicket.id)
+      .concat(ticketToEdit);
+      this.setState({
+        mainTicketList: editedMainTicketList,
+        stateName: "list"
+
+        
+      });
+
+  }
   
 
   render (){
@@ -75,8 +94,17 @@ class TicketControl extends React.Component {
     let addTicketButton = null; //thhanks camaron
 
     switch(this.state.stateName){
+      case "editing":
+        currentlyVisibleState = <EditTicketForm 
+        ticket={this.state.selectedTicket}
+        onClickingEdit ={this.handleEditingTicketInListToBeClickedOnLaterWhenYouNeedToUpdateAFormForWhenYouUseCreateReactAppButDoNotKnowWhatYouAreDoingButHaveToDoItAnyWayAlright } />
+        buttonText= "Return To Ticket List";
+        break;
       case 'ticketDetails':
-        currentlyVisibleState = <TicketDetail ticket={this.state.selectedTicket} onClickingDelete = {this.handleDeletingTicket} />
+        currentlyVisibleState = <TicketDetail 
+          ticket={this.state.selectedTicket} 
+          onClickingDelete = {this.handleDeletingTicket}
+          onClickingEdit = {this.handleEditClick} />
         buttonText = 'Return to Ticket List';
         break;
       case 'troubleshoot':

@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {v4} from 'uuid';
+import ReusableForm from "./ReusableForm";
 //import NewTicketForm from './NewTicketForm';
 //import TicketList from "./TicketList";
 
@@ -22,21 +23,9 @@ function NewTicketForm(props){
     }
   return (
     <>
-      <form onSubmit={handleNewTicketFormSubmission}>
-
-        <input
-          type='text'
-          name='names'
-          placeholder='put yer name' />
-        <input
-          type='text'
-          name='location'
-          placeholder='WHERE' />
-        <textarea
-          name='issue'
-          placeholder='Describe your issue.' />
-        <button type = 'submit'>Help!</button>
-      </form>       
+     <ReusableForm
+      formSubmissionHandler={handleNewTicketFormSubmission}
+        buttonText="HALP!" />    
     </>
   );
 }
